@@ -1,9 +1,9 @@
-# ignore ALL files in ANY directory named private
-private/
-
 # ignore pycache and .pyc files
 __pycache__/
 *.pyc
 
 # ignore venv
 venv/
+
+# ignore .env file
+.env
