@@ -56,7 +56,7 @@ def extract_greenhouse_info(search_item):
 def scrape_greenhouse():
     query = "allintitle:intern site:greenhouse.io after:2024-07-26 before:2024-07-27" 
     # TODO: Implement query date parameters dynamically
-
+    job_postings = []
     for page in range(1, 11):
         start = (page - 1) * 10 + 1  # Google's search results display 10 results per page
         url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start={start}"
@@ -72,28 +72,29 @@ def scrape_greenhouse():
                 title, alt_title, company, location, link = extract_greenhouse_info(search_item)
                 
                 if title != "N/A":
-                    job_data = {
+                    job_posting = {
                         "title": title,
                         "company": company,
                         "location": location,
                         "date": "2000-01-01 00:00:01",
                         "link": link,
                     }
-                    r = requests.post("https://instapply.onrender.com/api/master", json=job_data)
+                    job_postings.append(job_posting)
                 elif alt_title != "N/A":
-                    job_data = {
+                    job_posting = {
                         "title": alt_title,
                         "company": company,
                         "location": location,
                         "date": "2000-01-01 00:00:01",
                         "link": link,
                     }
-                    r = requests.post("https://instapply.onrender.com/api/master", json=job_data)
+                    job_postings.append(job_posting)
                 else:
                     continue
                 
         # Exits the loop when no more search results are found
         except TypeError:
             break
+    r = requests.post("https://instapply.onrender.com/api/master", json=job_postings)
 
 scrape_greenhouse()

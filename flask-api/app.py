@@ -22,19 +22,20 @@ def connect_to_db():
 
 @app.route("/api/master", methods=["POST"])
 def add_job_master():
-    data = request.get_json()
-    title = data["title"]
-    company = data["company"]
-    location = data["location"]
-    date = data["date"]
-    link = data["link"]
     connection = connect_to_db()
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(CREATE_MASTER_TABLE)
-            cursor.execute(INSERT_JOB_MASTER, (title, company, location, date, link))
+    data = request.get_json()
+    for row in data:
+        title = row["title"]
+        company = row["company"]
+        location = row["location"]
+        date = row["date"]
+        link = row["link"]
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute(CREATE_MASTER_TABLE)
+                cursor.execute(INSERT_JOB_MASTER, (title, company, location, date, link))
+        cursor.close()
     connection.close()
-    cursor.close()
     return Response("Job added successfully", status=200)
 
 
