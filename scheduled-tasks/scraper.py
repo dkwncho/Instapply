@@ -79,7 +79,7 @@ def scrape_greenhouse():
                         "date": "2000-01-01 00:00:01",
                         "link": link,
                     }
-                    r = requests.post("http://localhost:5000/api/master", json=job_data)
+                    r = requests.post("https://instapply.onrender.com/api/master", json=job_data)
                 elif alt_title != "N/A":
                     job_data = {
                         "title": alt_title,
@@ -88,7 +88,7 @@ def scrape_greenhouse():
                         "date": "2000-01-01 00:00:01",
                         "link": link,
                     }
-                    r = requests.post("http://localhost:5000/api/master", json=job_data)
+                    r = requests.post("https://instapply.onrender.com/api/master", json=job_data)
                 else:
                     continue
                 
