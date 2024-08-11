@@ -4,3 +4,4 @@ python-rapidjson
 python-dotenv
 requests
 gunicorn
+cachetools

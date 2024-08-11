@@ -1,8 +1,10 @@
 import os
 import psycopg2
 import rapidjson
+import cachetools
 from flask import Flask, request, Response
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -15,6 +17,9 @@ INSERT_JOB_MASTER = (
 )
 
 app = Flask(__name__)
+
+master_cache = cachetools.TTLCache(maxsize=7, ttl=604800)
+
 
 def connect_to_db():
     connection = psycopg2.connect(DATABASE_URL)
@@ -59,9 +64,19 @@ def get_jobs_master():
             "date": row[4].strftime("%Y-%m-%d %H:%M:%S"),
             "link": row[5]
         })
+
+    return rapidjson.dumps(jobs_list)
+
+@app.route("/api/master/cache", methods=["GET"])
+def get_jobs_master_cache():
+    cache_key = datetime.now().strftime('%Y-%m-%d')
     
-    jobs_data = rapidjson.dumps(jobs_list)
-    return jobs_data
+    if cache_key in master_cache:
+        return master_cache[cache_key]
+    else:
+        jobs_data = get_jobs_master()
+        master_cache[cache_key] = jobs_data
+        return jobs_data
 
 if __name__ == '__main__':
     app.run(debug=True)
