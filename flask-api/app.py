@@ -64,7 +64,6 @@ def get_jobs_master():
             "date": row[4].strftime("%Y-%m-%d %H:%M:%S"),
             "link": row[5]
         })
-
     return rapidjson.dumps(jobs_list)
 
 @app.route("/api/master/cache", methods=["GET"])
