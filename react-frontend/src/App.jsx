@@ -5,9 +5,11 @@ import './App.css'
 import Table from './components/Table.jsx'
 
 function App() {
-  <div>
-    <Table />
-  </div>
+  return (
+    <>
+      <Table />
+    </>
+  )
 };
 
 export default App
