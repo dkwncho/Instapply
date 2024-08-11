@@ -10,5 +10,14 @@
             "src": "/(.*)",
             "dest": "app.py"
         }
+    ],
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                { "key": "Access-Control-Allow-Origin", "value": "https://instapply.vercel.app/" },
+                { "key": "Access-Control-Allow-Methods", "value": "GET" }
+            ]
+        }
     ]
 }
