@@ -68,8 +68,8 @@ def get_jobs_master():
 
 @app.route("/api/master/cache", methods=["GET"])
 def get_jobs_master_cache():
-    cache_key = datetime.now().strftime('%Y-%m-%d')
-    
+    cache_key = datetime.now().strftime('%m/%d/%Y')
+
     if cache_key in master_cache:
         return master_cache[cache_key]
     else:
