@@ -10,7 +10,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 CREATE_MASTER_TABLE = (
-    "CREATE TABLE IF NOT EXISTS master (id SERIAL PRIMARY KEY, title TEXT, company TEXT, industry TEXT, location TEXT, date TIMESTAMP, link TEXT);" 
+    "CREATE TABLE IF NOT EXISTS master (id SERIAL PRIMARY KEY, title TEXT, company TEXT, industry TEXT[], location TEXT, date TIMESTAMP, link TEXT);" 
 )
 INSERT_JOB_MASTER = (
     "INSERT INTO master (title, company, industry, location, date, link) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
