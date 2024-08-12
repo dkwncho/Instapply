@@ -32,13 +32,14 @@ def add_job_master():
     for row in data:
         title = row["title"]
         company = row["company"]
+        industry = row["industry"]
         location = row["location"]
         date = row["date"]
         link = row["link"]
         with connection:
             with connection.cursor() as cursor:
                 cursor.execute(CREATE_MASTER_TABLE)
-                cursor.execute(INSERT_JOB_MASTER, (title, company, location, date, link))
+                cursor.execute(INSERT_JOB_MASTER, (title, company, industry, location, date, link))
         cursor.close()
     connection.close()
     return Response("Job added successfully", status=200)
@@ -60,9 +61,10 @@ def get_jobs_master():
             "id": row[0],
             "title": row[1],
             "company": row[2],
-            "location": row[3],
-            "date": row[4].strftime("%Y-%m-%d %H:%M:%S"),
-            "link": row[5]
+            "industry": row[3],
+            "location": row[4],
+            "date": row[5].strftime('%m/%d/%Y'),
+            "link": row[6]
         })
     return rapidjson.dumps(jobs_list)
 
