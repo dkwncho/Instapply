@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { ConfigProvider, Table } from "antd";
+import { columns } from '../constants.jsx';
 
 function JobListings() {
     const [masterTable, setMasterTable] = useState([]);
@@ -16,7 +18,6 @@ function JobListings() {
             .then(data => {
                 setMasterTable(data);
                 setLoading(false);
-                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -34,32 +35,18 @@ function JobListings() {
     }
 
     return (
-        <div>
-            <h1>Job Listings</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Company</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {masterTable.map(job => (
-                        <tr key={job.id}>
-                            <td>{job.title}</td>
-                            <td>{job.company}</td>
-                            <td>{job.location}</td>
-                            <td>{new Date(job.date).toLocaleDateString()}</td>
-                            <td><a href={job.link} target="_blank" rel="noopener noreferrer">Apply</a></td>
-                            </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <ConfigProvider
+            theme={{
+                components: {
+                    Table: {
+                        headerBg: "white",
+                    },
+                },
+            }}
+        >
+            <Table dataSource={masterTable} columns = {columns} />
+        </ConfigProvider>
+        
     );
 };
 
