@@ -2,6 +2,8 @@ import os
 import re
 import requests
 from dotenv import load_dotenv
+from datetime import date, timedelta
+from config import KEYWORDS
 
 load_dotenv()
 
@@ -38,24 +40,38 @@ def extract_greenhouse_info(search_item):
     
     try:
         # Company name is scraped from search result
-        company = title_match.group(2).strip()   
-        # TODO: Sometimes the above yields company = "Name ..." or "..."
-        #  since the title may appear as "Intern at ..." due to limited search result space.
-        #  Add another check to use to link scrape method if there are three periods in the company name
+        company = title_match.group(2).strip()
+        if "..." in company:
+            raise AttributeError
+        
     except AttributeError:
         try:
             # Company name is scraped from URL
             link_pattern = r'greenhouse\.io/([^/]+)/jobs'  
             link_match = re.search(link_pattern, link)
             company = link_match.group(1)
+            
         except AttributeError:
             company = "N/A"
     
     return title, alt_title, company, location, link
 
+def classify_job(title):
+    industry_list = []
+    for industry, keywords in KEYWORDS.items():
+        for keyword in keywords:
+            pattern = r'\b' + re.escape(keyword) + r'\b'
+            if re.search(pattern, title, re.IGNORECASE):
+                industry_list.append(industry)
+                break
+
+    return industry_list
+
 def scrape_greenhouse():
-    query = "allintitle:intern site:greenhouse.io after:2024-07-26 before:2024-07-27" 
-    # TODO: Implement query date parameters dynamically
+    today = date.today()
+    yesterday = today - timedelta(days = 1)
+
+    query = f"allintitle:intern site:greenhouse.io after:{yesterday} before:{today}" 
     job_postings = []
     for page in range(1, 11):
         start = (page - 1) * 10 + 1  # Google's search results display 10 results per page
@@ -72,20 +88,24 @@ def scrape_greenhouse():
                 title, alt_title, company, location, link = extract_greenhouse_info(search_item)
                 
                 if title != "N/A":
+                    industry = classify_job(title)
                     job_posting = {
                         "title": title,
                         "company": company,
+                        "industry": industry,
                         "location": location,
-                        "date": "2000-01-01 00:00:01",
+                        "date": yesterday,
                         "link": link,
                     }
                     job_postings.append(job_posting)
                 elif alt_title != "N/A":
+                    industry = classify_job(alt_title)
                     job_posting = {
                         "title": alt_title,
                         "company": company,
+                        "industry": industry,
                         "location": location,
-                        "date": "2000-01-01 00:00:01",
+                        "date": yesterday,
                         "link": link,
                     }
                     job_postings.append(job_posting)
@@ -95,6 +115,6 @@ def scrape_greenhouse():
         # Exits the loop when no more search results are found
         except TypeError:
             break
-    r = requests.post("https://instapply.onrender.com/api/master", json=job_postings)
+    r = requests.post("https://instapply-api.vercel.app/api/master", json=job_postings)
 
 scrape_greenhouse()
