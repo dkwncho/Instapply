@@ -5,7 +5,6 @@ const tabs = [
     { key: 'Technology', label: 'Technology' },
     { key: 'Business', label: 'Business' },
     { key: 'Engineering', label: 'Engineering' },
-    { key: 'Healthcare', label: 'Healthcare' },
     { key: 'Government', label: 'Government' }
 ];
 
