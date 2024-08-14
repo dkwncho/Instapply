@@ -16,7 +16,7 @@ export const columns = [
         key: 'location',
     },
     {
-        title: 'Date',
+        title: 'Date Posted',
         dataIndex: 'date',
         key: 'date',
     },
