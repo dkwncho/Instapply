@@ -75,8 +75,10 @@ def classify_job(title):
 def scrape_greenhouse():
     today = date.today()
     yesterday = today - timedelta(days = 1)
+    today_string = today.strftime("%Y-%m-%d")
+    yesterday_string = yesterday.strftime("%Y-%m-%d")
 
-    query = f"allintitle:intern site:greenhouse.io after:{yesterday} before:{today}" 
+    query = f"allintitle:intern site:greenhouse.io after:{yesterday_string} before:{today_string}" 
     job_postings = []
     for page in range(1, 11):
         start = (page - 1) * 10 + 1  # Google's search results display 10 results per page
@@ -99,7 +101,7 @@ def scrape_greenhouse():
                         "company": company,
                         "industry": industry,
                         "location": location,
-                        "date": yesterday,
+                        "date": yesterday_string,
                         "link": link,
                     }
                     job_postings.append(job_posting)
@@ -110,7 +112,7 @@ def scrape_greenhouse():
                         "company": company,
                         "industry": industry,
                         "location": location,
-                        "date": yesterday,
+                        "date": yesterday_string,
                         "link": link,
                     }
                     job_postings.append(job_posting)
