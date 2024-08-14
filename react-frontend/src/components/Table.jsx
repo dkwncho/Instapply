@@ -55,7 +55,7 @@ function Table() {
                     {todayInternshipCount} New Internships Added Today!
                 </h3>
             </div>
-            <div className="text-sm mt-6 overflow-x-auto">
+            <div className="text-sm mt-6">
                 <TabList activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className="shadow-sm border rounded-lg">
                     <table className="w-full table-auto rounded-lg text-left">
