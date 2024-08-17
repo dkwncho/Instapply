@@ -63,14 +63,14 @@ def get_jobs_master():
             "company": row[2],
             "industry": row[3],
             "location": row[4],
-            "date": row[5].strftime('%m/%d/%Y'),
+            "date": row[5].strftime("%m/%d/%Y"),
             "link": row[6]
         })
     return rapidjson.dumps(jobs_list)
 
 @app.route("/api/master/cache", methods=["GET"])
 def get_jobs_master_cache():
-    cache_key = datetime.now().strftime('%m/%d/%Y')
+    cache_key = datetime.now().strftime("%m/%d/%Y")
 
     if cache_key in master_cache:
         return master_cache[cache_key]
@@ -79,5 +79,5 @@ def get_jobs_master_cache():
         master_cache[cache_key] = jobs_data
         return jobs_data
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
