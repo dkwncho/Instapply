@@ -69,6 +69,6 @@ def scrape(website_url):
             break
     r = requests.post("https://instapply-api.vercel.app/api/master", json=job_postings)
 
-scrape("greenhouse.io")
-scrape("lever.co")
 scrape("smartrecruiters.com")
+scrape("lever.co")
+scrape("greenhouse.io")
