@@ -9,14 +9,25 @@ const filterByIndustry = (data, industry) => {
 };
 
 function Table() {
+    // Variables for tab and table data
     const [masterTable, setMasterTable] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [activeTab, setActiveTab] = useState("Master");
+    const [activeTab, setActiveTab] = useState(() => {
+        return localStorage.getItem("activeTab") || "Master";
+    });
+    const activeTabTable = activeTab === "Master" ? masterTable : filterByIndustry(masterTable, activeTab);
+
+    // Variables for calculating the total number of internships added today
     const [todayInternshipCount, setTodayInternshipCount] = useState(0);
     const today = new Date();
     var yesterday = new Date(today.setDate(today.getDate() - 1));
     yesterday = `${String(yesterday.getMonth() + 1).padStart(2, '0')}/${String(yesterday.getDate()).padStart(2, '0')}/${yesterday.getFullYear()}`;
+    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    useEffect(() => {
+        localStorage.setItem("activeTab", activeTab);
+    }, [activeTab]);
 
     useEffect(() => {
         fetch('https://instapply-api.vercel.app/api/master/cache')
@@ -45,9 +56,7 @@ function Table() {
     if (error) {
         return <p>Error fetching data: {error.message}</p>;
     }
-
-    const activeTabTable = activeTab === "Master" ? masterTable : filterByIndustry(masterTable, activeTab);
-
+    
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
             <div className="mx-2 max-w-lg text-left">
@@ -64,7 +73,7 @@ function Table() {
                                 <th className="w-4/12 py-4 pl-6">Job Title</th>
                                 <th className="w-3/12 py-4 pl-6">Company</th>
                                 <th className="w-3.5/12 py-4 pl-6">Location</th>
-                                <th className="w-1.5/12 py-4 pl-6">Date</th>
+                                <th className="w-1.5/12 py-4 px-6">Date</th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 divide-y">
@@ -77,7 +86,7 @@ function Table() {
                                         </td>
                                         <td className="pl-6 py-4 whitespace-wrap">{item.company}</td>
                                         <td className="pl-6 py-4 whitespace-wrap">{item.location}</td>
-                                        <td className="pl-6 py-4 whitespace-wrap">{item.date}</td>
+                                        <td className="px-6 py-4 whitespace-wrap">{item.date}</td>
                                     </tr>
                                 ))
                             }
