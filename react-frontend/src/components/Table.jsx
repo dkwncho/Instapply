@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import TabList from './TabList';
+import React, { useEffect, useState } from "react";
+import TabList from "./TabList";
 
 const filterByIndustry = (data, industry) => {
     if (!Array.isArray(data)) {
@@ -20,7 +20,7 @@ function Table() {
     const [todayInternshipCount, setTodayInternshipCount] = useState(0);
     const today = new Date();
     var yesterday = new Date(today.setDate(today.getDate() - 1));
-    yesterday = `${String(yesterday.getMonth() + 1).padStart(2, '0')}/${String(yesterday.getDate()).padStart(2, '0')}/${yesterday.getFullYear()}`;
+    yesterday = `${String(yesterday.getMonth() + 1).padStart(2, "0")}/${String(yesterday.getDate()).padStart(2, "0")}/${yesterday.getFullYear()}`;
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -30,10 +30,10 @@ function Table() {
     }, [activeTab]);
 
     useEffect(() => {
-        fetch('https://instapply-api.vercel.app/api/master/cache')
+        fetch("https://instapply-api.vercel.app/api/master/cache")
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error("Network response was not ok");
                 }
                 return response.json();
             })
@@ -43,7 +43,7 @@ function Table() {
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                console.error("Error fetching data:", error);
                 setError(error);
                 setLoading(false);
             });
@@ -59,7 +59,7 @@ function Table() {
     
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div className="mx-2 max-w-lg text-left">
+            <div className="mx-2 max-w-full text-left">
                 <h3 className="title text-xl font-bold sm:text-2xl">
                     {todayInternshipCount} New Internships Added Today!
                 </h3>

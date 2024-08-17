@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 const tabs = [
-    { key: 'Master', label: 'All' },
-    { key: 'Technology', label: 'Technology' },
-    { key: 'Business', label: 'Business' },
-    { key: 'Engineering', label: 'Engineering' },
-    { key: 'Government', label: 'Government' }
+    { key: "Master", label: "All" },
+    { key: "Technology", label: "Technology" },
+    { key: "Business", label: "Business" },
+    { key: "Engineering", label: "Engineering" },
+    { key: "Government", label: "Government" }
 ];
 
 const Tab = ({ tab, activeTab, onClick }) => (

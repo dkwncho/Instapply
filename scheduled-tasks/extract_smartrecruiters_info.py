@@ -40,7 +40,7 @@ def extract_smartrecruiters_info(search_item):
         except KeyError:
             try:
                 # Company name is scraped from URL
-                link_pattern = r'smartrecruiters.com/([^/]+)/'  
+                link_pattern = r"smartrecruiters.com/([^/]+)/"  
                 link_match = re.search(link_pattern, link)
                 company = link_match.group(1)
             except AttributeError:

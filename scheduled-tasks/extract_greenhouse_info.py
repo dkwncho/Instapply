@@ -13,8 +13,8 @@ def extract_greenhouse_info(search_item):
     try:
         # Location is scraped directly from website
         r = requests.get(link)
-        soup = BeautifulSoup(r.content, 'html5lib')
-        location = soup.find('div', attrs = {'class':'location'}).text 
+        soup = BeautifulSoup(r.content, "html5lib")
+        location = soup.find("div", attrs = {"class":"location"}).text 
     except AttributeError:
         try:
             # Location is scraped from metadata
@@ -22,7 +22,7 @@ def extract_greenhouse_info(search_item):
         except KeyError:
             location = "N/A"
             
-    title_pattern = r'(.*) at ([^ ]+.*)'
+    title_pattern = r"(.*) at ([^ ]+.*)"
     alt_title = search_item.get("title").removeprefix("Job Application for ")
     title_match = re.search(title_pattern, alt_title)
     try:
@@ -44,7 +44,7 @@ def extract_greenhouse_info(search_item):
     except AttributeError:
         try:
             # Company name is scraped from URL
-            link_pattern = r'greenhouse\.io/([^/]+)/jobs'  
+            link_pattern = r"greenhouse\.io/([^/]+)/jobs"  
             link_match = re.search(link_pattern, link)
             company = link_match.group(1)
         except AttributeError:
