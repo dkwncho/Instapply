@@ -80,4 +80,4 @@ def get_jobs_master_cache():
         return jobs_data
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
